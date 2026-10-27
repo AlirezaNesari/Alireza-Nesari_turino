@@ -22,7 +22,8 @@ const schema = yup.object({
 })
 
 const notifyCode = (code?: string) => {
-  if (process.env.NODE_ENV !== 'production' && code) toast.info(`کد تایید (فقط تست): ${code}`)
+  if (process.env.NODE_ENV !== 'production' && code)
+    toast.info(`کد تایید (فقط تست): ${code}`)
 }
 
 export default function LoginModal() {
@@ -39,23 +40,35 @@ export default function LoginModal() {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm sm:items-center"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
       onClick={close}
     >
       <div
-        className="relative w-full rounded-t-2xl bg-white p-6 sm:max-w-md sm:rounded-2xl"
+        className="relative w-full max-w-md rounded-2xl bg-white p-6"
         onClick={(e) => e.stopPropagation()}
       >
         {mobile ? (
-          <button onClick={() => setMobile(null)} aria-label="بازگشت" className="absolute start-4 top-4">
+          <button
+            onClick={() => setMobile(null)}
+            aria-label="بازگشت"
+            className="absolute start-4 top-4"
+          >
             <ArrowRight size={20} />
           </button>
         ) : (
-          <button onClick={close} aria-label="بستن" className="absolute start-4 top-4">
+          <button
+            onClick={close}
+            aria-label="بستن"
+            className="absolute start-4 top-4"
+          >
             <X size={20} />
           </button>
         )}
-        {mobile ? <OtpStep mobile={mobile} onDone={close} /> : <MobileStep onNext={setMobile} />}
+        {mobile ? (
+          <OtpStep mobile={mobile} onDone={close} />
+        ) : (
+          <MobileStep onNext={setMobile} />
+        )}
       </div>
     </div>
   )
@@ -78,7 +91,10 @@ function MobileStep({ onNext }: { onNext: (m: string) => void }) {
   })
 
   return (
-    <form onSubmit={handleSubmit(({ mobile }) => mutation.mutate(mobile))} className="mt-6 space-y-4">
+    <form
+      onSubmit={handleSubmit(({ mobile }) => mutation.mutate(mobile))}
+      className="mt-6 space-y-4"
+    >
       <h2 className="text-center text-xl font-bold">ورود به تورینو</h2>
       <label className="block text-sm">
         شماره موبایل خود را وارد کنید
@@ -86,13 +102,15 @@ function MobileStep({ onNext }: { onNext: (m: string) => void }) {
           {...register('mobile')}
           inputMode="numeric"
           placeholder="۰۹۱۲۳۴۵۶۷۸۹"
-          className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-3 outline-none focus:border-primary"
+          className="focus:border-primary mt-2 w-full rounded-lg border border-gray-300 px-3 py-3 outline-none"
         />
       </label>
-      {errors.mobile && <p className="text-sm text-red-600">{errors.mobile.message}</p>}
+      {errors.mobile && (
+        <p className="text-sm text-red-600">{errors.mobile.message}</p>
+      )}
       <button
         disabled={mutation.isPending}
-        className="w-full rounded-lg bg-primary py-3 font-medium text-white disabled:opacity-60"
+        className="bg-primary w-full rounded-lg py-3 font-medium text-white disabled:opacity-60"
       >
         {mutation.isPending ? 'در حال ارسال...' : 'ارسال کد تایید'}
       </button>
@@ -140,14 +158,17 @@ function OtpStep({ mobile, onDone }: { mobile: string; onDone: () => void }) {
       {left > 0 ? (
         <p className="text-xs text-gray-500">{toFa(label)} تا ارسال مجدد کد</p>
       ) : (
-        <button onClick={() => resend.mutate()} className="text-sm text-primary">
+        <button
+          onClick={() => resend.mutate()}
+          className="text-primary text-sm"
+        >
           ارسال مجدد کد
         </button>
       )}
       <button
         onClick={() => verify.mutate()}
         disabled={code.length !== 6 || verify.isPending}
-        className="w-full rounded-lg bg-primary py-3 font-medium text-white disabled:opacity-60"
+        className="bg-primary w-full rounded-lg py-3 font-medium text-white disabled:opacity-60"
       >
         {verify.isPending ? 'در حال بررسی...' : 'ورود به تورینو'}
       </button>

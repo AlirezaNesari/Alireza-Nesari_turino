@@ -5,7 +5,10 @@ import { Toaster } from 'sonner'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
-    () => new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } }),
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { refetchOnWindowFocus: false } },
+      }),
   )
   return (
     <QueryClientProvider client={client}>

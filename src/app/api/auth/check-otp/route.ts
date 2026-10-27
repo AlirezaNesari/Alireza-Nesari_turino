@@ -13,10 +13,19 @@ export async function POST(req: Request) {
     if (!res.ok) return NextResponse.json(data, { status: res.status })
 
     const out = NextResponse.json({ user: data.user })
-    out.cookies.set('accessToken', data.accessToken, { ...cookieOpts, maxAge: 60 * 60 })
-    out.cookies.set('refreshToken', data.refreshToken, { ...cookieOpts, maxAge: 60 * 60 * 24 * 7 })
+    out.cookies.set('accessToken', data.accessToken, {
+      ...cookieOpts,
+      maxAge: 60 * 60,
+    })
+    out.cookies.set('refreshToken', data.refreshToken, {
+      ...cookieOpts,
+      maxAge: 60 * 60 * 24 * 7,
+    })
     return out
   } catch {
-    return NextResponse.json({ message: 'اتصال با سرور برقرار نیست!' }, { status: 503 })
+    return NextResponse.json(
+      { message: 'اتصال با سرور برقرار نیست!' },
+      { status: 503 },
+    )
   }
 }

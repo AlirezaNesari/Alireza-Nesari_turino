@@ -23,20 +23,32 @@ export default function Header() {
   const [menu, setMenu] = useState(false)
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="bg-white md:border-b md:border-gray-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4">
-        <button className="md:hidden" onClick={() => setMenu((m) => !m)} aria-label="منو">
+        <button
+          className="text-primary-dark md:hidden"
+          onClick={() => setMenu((m) => !m)}
+          aria-label="منو"
+        >
           {menu ? <X /> : <Menu />}
         </button>
         <Link href="/" className="hidden md:block">
-          <Image src="/images/logo.svg" alt="تورینو" width={120} height={32} priority />
+          <Image
+            src="/images/logo.svg"
+            alt="تورینو"
+            width={120}
+            height={32}
+            priority
+          />
         </Link>
         <nav className="hidden gap-8 text-sm md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className={pathname === l.href ? 'text-primary' : 'hover:text-primary'}
+              className={
+                pathname === l.href ? 'text-primary' : 'hover:text-primary'
+              }
             >
               {l.label}
             </Link>
@@ -75,29 +87,45 @@ function AuthArea() {
     },
   })
 
-  if (isPending) return <div className="h-9 w-28 animate-pulse rounded-lg bg-gray-100" />
+  if (isPending)
+    return <div className="h-9 w-28 animate-pulse rounded-lg bg-gray-100" />
 
   if (!user)
     return (
       <button
         onClick={show}
-        className="flex items-center gap-2 rounded-lg border border-primary px-4 py-1.5 text-sm font-medium text-primary"
+        aria-label="ورود | ثبت نام"
+        className="border-primary text-primary flex items-center gap-2 rounded-lg border p-2 text-sm font-medium md:px-4 md:py-1.5"
       >
-        <UserIcon size={16} />
-        ورود | ثبت نام
+        <Image
+          src="/icons/login.svg"
+          alt=""
+          width={20}
+          height={20}
+          className="md:hidden"
+        />
+        <UserIcon size={16} className="hidden md:block" />
+        <span className="hidden md:inline">ورود | ثبت نام</span>
       </button>
     )
 
   return (
     <div className="relative">
-      <button onClick={() => setOpen((o) => !o)} className="flex items-center gap-2 text-sm text-primary">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="text-primary flex items-center gap-2 text-sm"
+      >
         <UserIcon size={16} />
         {toFa(user.mobile)}
         <ChevronDown size={16} />
       </button>
       {open && (
         <div className="absolute start-0 top-full z-40 mt-2 w-52 rounded-lg border border-gray-200 bg-white text-sm shadow-lg">
-          <Link href="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 px-4 py-3 hover:bg-gray-50">
+          <Link
+            href="/profile"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-4 py-3 hover:bg-gray-50"
+          >
             <UserIcon size={16} />
             اطلاعات حساب کاربری
           </Link>

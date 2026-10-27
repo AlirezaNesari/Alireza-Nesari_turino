@@ -20,7 +20,11 @@ export async function backendFetch(path: string, init: RequestInit = {}) {
     fetch(`${API}${path}`, {
       ...init,
       cache: 'no-store',
-      headers: { ...json, ...(token ? { Authorization: `Bearer ${token}` } : {}), ...init.headers },
+      headers: {
+        ...json,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...init.headers,
+      },
     })
 
   let res = await call(access)
@@ -46,6 +50,9 @@ export async function proxy(fn: () => Promise<Response>) {
     const data = await res.json().catch(() => ({}))
     return NextResponse.json(data, { status: res.status })
   } catch {
-    return NextResponse.json({ message: 'اتصال با سرور برقرار نیست!' }, { status: 503 })
+    return NextResponse.json(
+      { message: 'اتصال با سرور برقرار نیست!' },
+      { status: 503 },
+    )
   }
 }

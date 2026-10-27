@@ -1,1 +1,6 @@
-export type User = { id: string; mobile: string; firstName?: string; lastName?: string }
+export type User = {
+  id: string
+  mobile: string
+  firstName?: string
+  lastName?: string
+}
