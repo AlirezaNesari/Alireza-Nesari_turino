@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ChevronDown, LogOut, Menu, User as UserIcon, X } from 'lucide-react'
@@ -77,6 +77,8 @@ function AuthArea() {
   const show = useAuthModal((s) => s.show)
   const qc = useQueryClient()
   const [open, setOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
 
   const out = useMutation({
     mutationFn: logout,
@@ -84,6 +86,7 @@ function AuthArea() {
       qc.setQueryData(['me'], null)
       setOpen(false)
       toast.success('از حساب کاربری خارج شدید')
+      if (pathname.startsWith('/profile') || pathname.startsWith('/checkout')) router.push('/')
     },
   })
 
