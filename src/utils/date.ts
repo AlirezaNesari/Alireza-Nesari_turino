@@ -1,4 +1,4 @@
-import jalaali from 'jalaali-js'
+import * as jalaali from 'jalaali-js'
 import { toFa } from '@/utils/digits'
 
 const pad = (n: number) => String(n).padStart(2, '0')

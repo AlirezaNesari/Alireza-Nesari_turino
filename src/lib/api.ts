@@ -3,8 +3,7 @@ import type { Tour } from '@/types/tour'
 
 const API = process.env.API_URL!
 
-export type TourFilters = { originId?: string; destinationId?: string; startDate?: string; endDate?: string }
-
+import type { TourFilters } from '@/lib/api-types'
 export async function getTours(filters: TourFilters = {}): Promise<Tour[]> {
   const qs = new URLSearchParams()
   for (const [k, v] of Object.entries(filters)) if (v) qs.set(k, v)

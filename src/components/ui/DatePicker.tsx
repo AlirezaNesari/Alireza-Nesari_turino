@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
-import jalaali from 'jalaali-js'
+import * as jalaali from 'jalaali-js'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { MONTHS, formatJalali, isoToJalali, jalaliToIso, todayJalali, weekdayIndex } from '@/utils/date'
 import { toFa } from '@/utils/digits'
