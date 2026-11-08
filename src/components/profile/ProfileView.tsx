@@ -25,7 +25,12 @@ export default function ProfileView() {
         ))}
       </div>
     )
-  if (!user) return <p className="py-10 text-center text-gray-500">برای مشاهده‌ی پروفایل وارد شوید.</p>
+  if (!user)
+    return (
+      <p className="py-10 text-center text-gray-500">
+        برای مشاهده‌ی پروفایل وارد شوید.
+      </p>
+    )
 
   return (
     <div className="space-y-4">
@@ -36,7 +41,15 @@ export default function ProfileView() {
   )
 }
 
-function Card({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
+function Card({
+  title,
+  action,
+  children,
+}: {
+  title: string
+  action?: React.ReactNode
+  children: React.ReactNode
+}) {
   return (
     <section className="rounded-xl border border-gray-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between">
@@ -57,15 +70,28 @@ function Row({ label, value }: { label: string; value?: string | null }) {
   )
 }
 
-const EditBtn = ({ onClick, label = 'ویرایش اطلاعات' }: { onClick: () => void; label?: string }) => (
+const EditBtn = ({
+  onClick,
+  label = 'ویرایش اطلاعات',
+}: {
+  onClick: () => void
+  label?: string
+}) => (
   <button onClick={onClick} className="text-sm text-sky-600">
     {label}
   </button>
 )
 
-const Err = ({ msg }: { msg?: string }) => (msg ? <p className="mt-1 text-xs text-red-600">{msg}</p> : null)
+const Err = ({ msg }: { msg?: string }) =>
+  msg ? <p className="mt-1 text-xs text-red-600">{msg}</p> : null
 
-function FormActions({ pending, onCancel }: { pending: boolean; onCancel: () => void }) {
+function FormActions({
+  pending,
+  onCancel,
+}: {
+  pending: boolean
+  onCancel: () => void
+}) {
   return (
     <div className="mt-4 flex gap-3 border-t border-gray-100 pt-4">
       <button disabled={pending} className={btnPrimary}>
@@ -80,7 +106,11 @@ function FormActions({ pending, onCancel }: { pending: boolean; onCancel: () => 
 
 /* ---------- حساب کاربری ---------- */
 const emailSchema = yup.object({
-  email: yup.string().trim().email('ایمیل معتبر نیست').required('ایمیل را وارد کنید'),
+  email: yup
+    .string()
+    .trim()
+    .email('ایمیل معتبر نیست')
+    .required('ایمیل را وارد کنید'),
 })
 
 function AccountCard({ user }: { user: User }) {
@@ -89,17 +119,42 @@ function AccountCard({ user }: { user: User }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(emailSchema), defaultValues: { email: user.email ?? '' } })
+  } = useForm({
+    resolver: yupResolver(emailSchema),
+    defaultValues: { email: user.email ?? '' },
+  })
 
   return (
-    <Card title="اطلاعات حساب کاربری" action={!editing && <EditBtn onClick={() => setEditing(true)} label={user.email ? 'ویرایش' : 'افزودن'} />}>
+    <Card
+      title="اطلاعات حساب کاربری"
+      action={
+        !editing && (
+          <EditBtn
+            onClick={() => setEditing(true)}
+            label={user.email ? 'ویرایش' : 'افزودن'}
+          />
+        )
+      }
+    >
       <Row label="شماره موبایل" value={toFa(user.mobile)} />
       {editing ? (
         <form onSubmit={handleSubmit((v) => update.mutate(v))}>
-          <input {...register('email')} dir="ltr" placeholder="آدرس ایمیل" className={inputCls} />
+          <input
+            {...register('email')}
+            dir="ltr"
+            placeholder="آدرس ایمیل"
+            className={inputCls}
+          />
           <Err msg={errors.email?.message} />
-          <FormActions pending={update.isPending} onCancel={() => setEditing(false)} />
+          <FormActions
+            pending={update.isPending}
+            onCancel={() => {
+              reset()
+              setEditing(false)
+            }}
+          />
         </form>
       ) : (
         <Row label="ایمیل" value={user.email} />
@@ -110,14 +165,21 @@ function AccountCard({ user }: { user: User }) {
 
 /* ---------- اطلاعات شخصی ---------- */
 const personalSchema = yup.object({
-  fullName: yup.string().trim().required('نام و نام خانوادگی را وارد کنید').min(3, 'نام و نام خانوادگی معتبر نیست'),
+  fullName: yup
+    .string()
+    .trim()
+    .required('نام و نام خانوادگی را وارد کنید')
+    .min(3, 'نام و نام خانوادگی معتبر نیست'),
   nationalCode: yup
     .string()
     .transform((v) => toEn(v ?? ''))
     .required('کد ملی را وارد کنید')
     .test('nc', 'کد ملی معتبر نیست', (v) => isValidNationalCode(v ?? '')),
   birthDate: yup.string().required('تاریخ تولد را انتخاب کنید'),
-  gender: yup.string().oneOf(['male', 'female'], 'جنسیت را انتخاب کنید').required('جنسیت را انتخاب کنید'),
+  gender: yup
+    .string()
+    .oneOf(['male', 'female'], 'جنسیت را انتخاب کنید')
+    .required('جنسیت را انتخاب کنید'),
 })
 
 function PersonalCard({ user }: { user: User }) {
@@ -127,16 +189,17 @@ function PersonalCard({ user }: { user: User }) {
   const {
     register,
     handleSubmit,
+    reset,
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(personalSchema),
-defaultValues: {
-  fullName,
-  nationalCode: user.nationalCode ?? '',
-  birthDate: user.birthDate?.slice(0, 10) ?? '',
-  gender: user.gender ?? 'male',
-},
+    defaultValues: {
+      fullName,
+      nationalCode: user.nationalCode ?? '',
+      birthDate: user.birthDate?.slice(0, 10) ?? '',
+      gender: (user.gender ?? '') as 'male' | 'female',
+    },
   })
 
   function onSubmit(v: yup.InferType<typeof personalSchema>) {
@@ -151,16 +214,28 @@ defaultValues: {
   }
 
   return (
-    <Card title="اطلاعات شخصی" action={!editing && <EditBtn onClick={() => setEditing(true)} />}>
+    <Card
+      title="اطلاعات شخصی"
+      action={!editing && <EditBtn onClick={() => setEditing(true)} />}
+    >
       {editing ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <input {...register('fullName')} placeholder="نام و نام خانوادگی" className={inputCls} />
+              <input
+                {...register('fullName')}
+                placeholder="نام و نام خانوادگی"
+                className={inputCls}
+              />
               <Err msg={errors.fullName?.message} />
             </div>
             <div>
-              <input {...register('nationalCode')} inputMode="numeric" placeholder="کدملی" className={inputCls} />
+              <input
+                {...register('nationalCode')}
+                inputMode="numeric"
+                placeholder="کدملی"
+                className={inputCls}
+              />
               <Err msg={errors.nationalCode?.message} />
             </div>
             <div>
@@ -189,14 +264,35 @@ defaultValues: {
               <Err msg={errors.gender?.message} />
             </div>
           </div>
-          <FormActions pending={update.isPending} onCancel={() => setEditing(false)} />
+          <FormActions
+            pending={update.isPending}
+            onCancel={() => {
+              reset()
+              setEditing(false)
+            }}
+          />
         </form>
       ) : (
         <>
           <Row label="نام و نام خانوادگی" value={fullName} />
-          <Row label="کدملی" value={user.nationalCode && toFa(user.nationalCode)} />
-          <Row label="تاریخ تولد" value={user.birthDate && formatJalali(user.birthDate)} />
-          <Row label="جنسیت" value={user.gender === 'male' ? 'مرد' : user.gender === 'female' ? 'زن' : undefined} />
+          <Row
+            label="کدملی"
+            value={user.nationalCode && toFa(user.nationalCode)}
+          />
+          <Row
+            label="تاریخ تولد"
+            value={user.birthDate && formatJalali(user.birthDate)}
+          />
+          <Row
+            label="جنسیت"
+            value={
+              user.gender === 'male'
+                ? 'مرد'
+                : user.gender === 'female'
+                  ? 'زن'
+                  : undefined
+            }
+          />
         </>
       )}
     </Card>
@@ -206,13 +302,21 @@ defaultValues: {
 /* ---------- اطلاعات بانکی ---------- */
 const digits = (v?: string) => toEn((v ?? '').replace(/[\s-]/g, ''))
 const bankSchema = yup.object({
-  debitCard_code: yup.string().transform(digits).required('شماره کارت را وارد کنید').matches(/^\d{16}$/, 'شماره کارت باید ۱۶ رقم باشد'),
+  debitCard_code: yup
+    .string()
+    .transform(digits)
+    .required('شماره کارت را وارد کنید')
+    .matches(/^\d{16}$/, 'شماره کارت باید ۱۶ رقم باشد'),
   shaba_code: yup
     .string()
     .transform((v) => digits(v).toUpperCase())
     .required('شماره شبا را وارد کنید')
     .matches(/^(IR)?\d{24}$/, 'شماره شبا معتبر نیست (۲۴ رقم)'),
-  accountIdentifier: yup.string().transform(digits).required('شماره حساب را وارد کنید').matches(/^\d{6,20}$/, 'شماره حساب معتبر نیست'),
+  accountIdentifier: yup
+    .string()
+    .transform(digits)
+    .required('شماره حساب را وارد کنید')
+    .matches(/^\d{6,20}$/, 'شماره حساب معتبر نیست'),
 })
 
 function BankCard({ user }: { user: User }) {
@@ -222,6 +326,7 @@ function BankCard({ user }: { user: User }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(bankSchema),
@@ -233,30 +338,60 @@ function BankCard({ user }: { user: User }) {
   })
 
   return (
-    <Card title="اطلاعات حساب بانکی" action={!editing && <EditBtn onClick={() => setEditing(true)} />}>
+    <Card
+      title="اطلاعات حساب بانکی"
+      action={!editing && <EditBtn onClick={() => setEditing(true)} />}
+    >
       {editing ? (
         <form onSubmit={handleSubmit((v) => update.mutate({ payment: v }))}>
           <div className="grid gap-4 sm:grid-cols-3">
             <div>
-              <input {...register('debitCard_code')} inputMode="numeric" placeholder="شماره کارت" className={inputCls} />
+              <input
+                {...register('debitCard_code')}
+                inputMode="numeric"
+                placeholder="شماره کارت"
+                className={inputCls}
+              />
               <Err msg={errors.debitCard_code?.message} />
             </div>
             <div>
-              <input {...register('shaba_code')} dir="ltr" placeholder="شماره شبا" className={inputCls} />
+              <input
+                {...register('shaba_code')}
+                dir="ltr"
+                placeholder="شماره شبا"
+                className={inputCls}
+              />
               <Err msg={errors.shaba_code?.message} />
             </div>
             <div>
-              <input {...register('accountIdentifier')} inputMode="numeric" placeholder="شماره حساب" className={inputCls} />
+              <input
+                {...register('accountIdentifier')}
+                inputMode="numeric"
+                placeholder="شماره حساب"
+                className={inputCls}
+              />
               <Err msg={errors.accountIdentifier?.message} />
             </div>
           </div>
-          <FormActions pending={update.isPending} onCancel={() => setEditing(false)} />
+          <FormActions
+            pending={update.isPending}
+            onCancel={() => {
+              reset()
+              setEditing(false)
+            }}
+          />
         </form>
       ) : (
         <>
-          <Row label="شماره کارت" value={p?.debitCard_code && toFa(p.debitCard_code)} />
+          <Row
+            label="شماره کارت"
+            value={p?.debitCard_code && toFa(p.debitCard_code)}
+          />
           <Row label="شماره شبا" value={p?.shaba_code} />
-          <Row label="شماره حساب" value={p?.accountIdentifier && toFa(p.accountIdentifier)} />
+          <Row
+            label="شماره حساب"
+            value={p?.accountIdentifier && toFa(p.accountIdentifier)}
+          />
         </>
       )}
     </Card>

@@ -24,16 +24,15 @@ export default async function Home({
   const tours = await getTours(filters)
   return (
     <>
-      <div className="relative h-44 w-full md:h-80">
-        <Image
-          src="/images/home/hero.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+           <Image
+        src="/images/home/hero.png"
+        alt=""
+        width={1200}
+        height={400}
+        priority
+        sizes="100vw"
+        className="h-auto w-full md:h-80 md:object-cover"
+      />
 
       <section className="mx-auto max-w-7xl px-4">
         <h1 className="mt-8 text-center text-lg font-bold md:text-xl">

@@ -18,7 +18,9 @@ export default function ProfileSidebar() {
           key={it.href}
           href={it.href}
           className={`flex flex-1 items-center justify-center gap-2 px-4 py-3 md:justify-start ${
-            pathname === it.href ? 'bg-primary-soft text-primary' : 'hover:bg-gray-50'
+            pathname === it.href
+              ? 'bg-primary-soft text-primary'
+              : 'hover:bg-gray-50'
           }`}
         >
           <it.icon size={16} />

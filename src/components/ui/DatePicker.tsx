@@ -3,7 +3,14 @@ import { useRef, useState } from 'react'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import * as jalaali from 'jalaali-js'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
-import { MONTHS, formatJalali, isoToJalali, jalaliToIso, todayJalali, weekdayIndex } from '@/utils/date'
+import {
+  MONTHS,
+  formatJalali,
+  isoToJalali,
+  jalaliToIso,
+  todayJalali,
+  weekdayIndex,
+} from '@/utils/date'
 import { toFa } from '@/utils/digits'
 
 export type DateValue = { start: string | null; end: string | null }
@@ -21,7 +28,14 @@ type Props = {
   className?: string
 }
 
-export default function DatePicker({ mode = 'single', value, onChange, placeholder, yearRange, className }: Props) {
+export default function DatePicker({
+  mode = 'single',
+  value,
+  onChange,
+  placeholder,
+  yearRange,
+  className,
+}: Props) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   useOutsideClick(ref, () => setOpen(false))
@@ -49,9 +63,15 @@ export default function DatePicker({ mode = 'single', value, onChange, placehold
 
   return (
     <div ref={ref} className="relative">
-      <button type="button" onClick={() => setOpen((o) => !o)} className={className ?? defaultCls}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={className ?? defaultCls}
+      >
         <CalendarDays size={16} className="shrink-0 text-gray-500" />
-        <span className={label ? '' : 'text-gray-500'}>{label ?? placeholder}</span>
+        <span className={label ? '' : 'text-gray-500'}>
+          {label ?? placeholder}
+        </span>
       </button>
       {open && <Calendar value={value} onPick={pick} yearRange={yearRange} />}
     </div>
@@ -76,7 +96,10 @@ function Calendar({
 
   const [from, to] = yearRange ?? [today.jy - 2, today.jy + 2]
   const minY = Math.min(from, jy)
-  const years = Array.from({ length: Math.max(to, jy) - minY + 1 }, (_, i) => minY + i)
+  const years = Array.from(
+    { length: Math.max(to, jy) - minY + 1 },
+    (_, i) => minY + i,
+  )
 
   const offset = weekdayIndex(jy, jm, 1)
   const length = jalaali.jalaaliMonthLength(jy, jm)
@@ -92,7 +115,12 @@ function Calendar({
   return (
     <div className="absolute start-0 top-full z-30 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
       <div className="mb-2 flex items-center justify-between">
-        <button type="button" onClick={() => move(-1)} aria-label="ماه قبل" className="rounded p-1 hover:bg-gray-100">
+        <button
+          type="button"
+          onClick={() => move(-1)}
+          aria-label="ماه قبل"
+          className="rounded p-1 hover:bg-gray-100"
+        >
           <ChevronRight size={18} />
         </button>
         <div className="flex items-center gap-2 text-sm font-medium">
@@ -109,7 +137,12 @@ function Calendar({
             ))}
           </select>
         </div>
-        <button type="button" onClick={() => move(1)} aria-label="ماه بعد" className="rounded p-1 hover:bg-gray-100">
+        <button
+          type="button"
+          onClick={() => move(1)}
+          aria-label="ماه بعد"
+          className="rounded p-1 hover:bg-gray-100"
+        >
           <ChevronLeft size={18} />
         </button>
       </div>
@@ -127,15 +160,20 @@ function Calendar({
           const d = i + 1
           const iso = jalaliToIso(jy, jm, d)
           const selected = iso === value.start || iso === value.end
-          const inRange = !!value.start && !!value.end && iso > value.start && iso < value.end
+          const inRange =
+            !!value.start && !!value.end && iso > value.start && iso < value.end
           const isToday = today.jy === jy && today.jm === jm && today.jd === d
-          const cls = selected ? 'bg-primary text-white' : inRange ? 'bg-primary-soft' : 'hover:bg-gray-100'
+          const cls = selected
+            ? 'bg-primary text-white'
+            : inRange
+              ? 'bg-primary-soft'
+              : 'hover:bg-gray-100'
           return (
             <button
               key={d}
               type="button"
               onClick={() => onPick(iso)}
-              className={`mx-auto size-8 rounded-full text-sm ${cls} ${isToday && !selected ? 'ring-1 ring-primary' : ''}`}
+              className={`mx-auto size-8 rounded-full text-sm ${cls} ${isToday && !selected ? 'ring-primary ring-1' : ''}`}
             >
               {toFa(String(d))}
             </button>

@@ -8,7 +8,13 @@ import { reserveTour } from '@/services/tours'
 import { getErrorMessage } from '@/utils/error'
 import { btnPrimary } from '@/components/ui/styles'
 
-export default function ReserveButton({ tourId, soldOut }: { tourId: string; soldOut: boolean }) {
+export default function ReserveButton({
+  tourId,
+  soldOut,
+}: {
+  tourId: string
+  soldOut: boolean
+}) {
   const router = useRouter()
   const qc = useQueryClient()
   const { data: user } = useMe()
@@ -29,7 +35,11 @@ export default function ReserveButton({ tourId, soldOut }: { tourId: string; sol
       onClick={() => (user ? reserve.mutate() : show())}
       className={`${btnPrimary} px-10 py-3 text-base`}
     >
-      {soldOut ? 'ظرفیت تکمیل است' : reserve.isPending ? 'لطفا صبر کنید...' : 'رزرو و خرید'}
+      {soldOut
+        ? 'ظرفیت تکمیل است'
+        : reserve.isPending
+          ? 'لطفا صبر کنید...'
+          : 'رزرو و خرید'}
     </button>
   )
 }

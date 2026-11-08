@@ -16,5 +16,15 @@ export type Tour = {
 }
 
 export type UserTour = Tour & { ended: boolean }
-export type Transaction = { id: string; type: string; amount: number; createdAt: string }
-export type OrderBody = { fullName: string; nationalCode: string; gender: string; birthDate: string }
+export type Transaction = {
+  id: string
+  type: string
+  amount: number
+  createdAt: string
+}
+export type OrderBody = {
+  fullName: string
+  nationalCode: string
+  gender: string
+  birthDate: string
+}

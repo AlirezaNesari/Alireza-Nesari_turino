@@ -15,11 +15,18 @@ const vazir = localFont({
 })
 
 export const metadata: Metadata = {
-  title: { default: 'تورینو | برگزارکننده بهترین تورهای داخلی و خارجی', template: '%s | تورینو' },
+  title: {
+    default: 'تورینو | برگزارکننده بهترین تورهای داخلی و خارجی',
+    template: '%s | تورینو',
+  },
   description: 'رزرو آنلاین تورهای داخلی و خارجی با تورینو',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="fa" dir="rtl" className={vazir.variable}>
       <body className="flex min-h-dvh flex-col font-sans">

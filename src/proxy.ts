@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 export function proxy(req: NextRequest) {
-  const hasSession = req.cookies.has('accessToken') || req.cookies.has('refreshToken')
+  const hasSession =
+    req.cookies.has('accessToken') || req.cookies.has('refreshToken')
   if (!hasSession) {
     const url = req.nextUrl.clone()
     url.pathname = '/'

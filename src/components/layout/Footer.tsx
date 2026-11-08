@@ -80,7 +80,7 @@ export default function Footer() {
                 height={32}
               />
               <p className="mt-3 text-sm whitespace-nowrap">
-                تلفن پشتیبانی:۰۲۱۸۵۷۴
+                تلفن پشتیبانی: <bdi dir="ltr">۰۲۱-۸۵۷۴</bdi>
               </p>
             </div>
           </div>

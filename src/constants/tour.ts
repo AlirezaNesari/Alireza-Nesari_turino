@@ -11,7 +11,6 @@ export const VEHICLES = {
 export const getVehicle = (v: string) =>
   VEHICLES[v.toLowerCase() as keyof typeof VEHICLES] ?? { label: v, icon: Car }
 
-
 export const CITY_NAMES: Record<string, string> = {
   '1': 'تهران',
   '2': 'سنندج',
@@ -26,4 +25,5 @@ export const CITY_NAMES: Record<string, string> = {
 const list = (ids: string[]) => ids.map((id) => ({ id, name: CITY_NAMES[id] }))
 export const ORIGINS = list(['1', '2', '4'])
 export const DESTINATIONS = list(['2', '3', '5', '6', '7', '8', '9'])
-export const cityName = (c: { id: string; name: string }) => CITY_NAMES[c.id] ?? c.name
+export const cityName = (c: { id: string; name: string }) =>
+  CITY_NAMES[c.id] ?? c.name

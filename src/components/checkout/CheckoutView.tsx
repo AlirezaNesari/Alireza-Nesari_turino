@@ -19,20 +19,31 @@ import { isValidNationalCode } from '@/utils/validators'
 const BIRTH_YEARS: [number, number] = [1300, 1410]
 
 const schema = yup.object({
-  fullName: yup.string().trim().required('نام و نام خانوادگی را وارد کنید').min(3, 'نام و نام خانوادگی معتبر نیست'),
+  fullName: yup
+    .string()
+    .trim()
+    .required('نام و نام خانوادگی را وارد کنید')
+    .min(3, 'نام و نام خانوادگی معتبر نیست'),
   nationalCode: yup
     .string()
     .transform((v) => toEn(v ?? ''))
     .required('کد ملی را وارد کنید')
     .test('nc', 'کد ملی معتبر نیست', (v) => isValidNationalCode(v ?? '')),
   birthDate: yup.string().required('تاریخ تولد را انتخاب کنید'),
-  gender: yup.string().oneOf(['male', 'female'], 'جنسیت را انتخاب کنید').required('جنسیت را انتخاب کنید'),
+  gender: yup
+    .string()
+    .oneOf(['male', 'female'], 'جنسیت را انتخاب کنید')
+    .required('جنسیت را انتخاب کنید'),
 })
 
 export default function CheckoutView() {
   const qc = useQueryClient()
   const [success, setSuccess] = useState<string | null>(null)
-  const { data: tour, isPending, isError } = useQuery({ queryKey: ['basket'], queryFn: getBasket })
+  const {
+    data: tour,
+    isPending,
+    isError,
+  } = useQuery({ queryKey: ['basket'], queryFn: getBasket })
   const {
     register,
     handleSubmit,
@@ -68,10 +79,17 @@ export default function CheckoutView() {
       </div>
     )
 
-  if (isPending) return <div className="mx-auto h-64 max-w-7xl animate-pulse rounded-xl bg-gray-100 md:m-8" />
+  if (isPending)
+    return (
+      <div className="mx-auto h-64 max-w-7xl animate-pulse rounded-xl bg-gray-100 md:m-8" />
+    )
 
   if (isError)
-    return <p className="py-20 text-center text-red-600">خطا در دریافت اطلاعات خرید. دوباره تلاش کنید.</p>
+    return (
+      <p className="py-20 text-center text-red-600">
+        خطا در دریافت اطلاعات خرید. دوباره تلاش کنید.
+      </p>
+    )
 
   if (!tour)
     return (
@@ -97,11 +115,20 @@ export default function CheckoutView() {
         </h1>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <input {...register('fullName')} placeholder="نام و نام خانوادگی" className={inputCls} />
+            <input
+              {...register('fullName')}
+              placeholder="نام و نام خانوادگی"
+              className={inputCls}
+            />
             <Err msg={errors.fullName?.message} />
           </div>
           <div>
-            <input {...register('nationalCode')} inputMode="numeric" placeholder="کدملی" className={inputCls} />
+            <input
+              {...register('nationalCode')}
+              inputMode="numeric"
+              placeholder="کدملی"
+              className={inputCls}
+            />
             <Err msg={errors.nationalCode?.message} />
           </div>
           <div>
@@ -120,7 +147,11 @@ export default function CheckoutView() {
             <Err msg={errors.birthDate?.message} />
           </div>
           <div>
-            <select {...register('gender')} defaultValue="" className={inputCls}>
+            <select
+              {...register('gender')}
+              defaultValue=""
+              className={inputCls}
+            >
               <option value="" disabled>
                 جنسیت
               </option>
@@ -131,7 +162,9 @@ export default function CheckoutView() {
           </div>
         </div>
         {order.isError && (
-          <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{getErrorMessage(order.error)}</p>
+          <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+            {getErrorMessage(order.error)}
+          </p>
         )}
       </form>
 
@@ -145,11 +178,17 @@ export default function CheckoutView() {
         <div className="my-4 flex items-center justify-between border-t border-dashed border-gray-300 pt-4 text-sm">
           <span>قیمت نهایی</span>
           <p>
-            <span className="text-xl font-bold text-sky-600">{formatPrice(tour.price)}</span>{' '}
+            <span className="text-xl font-bold text-sky-600">
+              {formatPrice(tour.price)}
+            </span>{' '}
             <span className="text-xs text-gray-500">تومان</span>
           </p>
         </div>
-        <button form="passenger-form" disabled={order.isPending} className={`${btnPrimary} w-full py-3`}>
+        <button
+          form="passenger-form"
+          disabled={order.isPending}
+          className={`${btnPrimary} w-full py-3`}
+        >
           {order.isPending ? 'در حال ثبت...' : 'ثبت و خرید نهایی'}
         </button>
       </aside>

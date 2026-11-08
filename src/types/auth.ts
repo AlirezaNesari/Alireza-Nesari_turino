@@ -1,4 +1,8 @@
-export type Payment = { shaba_code?: string; debitCard_code?: string; accountIdentifier?: string }
+export type Payment = {
+  shaba_code?: string
+  debitCard_code?: string
+  accountIdentifier?: string
+}
 
 export type User = {
   id: string

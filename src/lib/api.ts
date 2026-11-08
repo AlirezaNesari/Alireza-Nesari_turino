@@ -1,9 +1,9 @@
 import 'server-only'
 import type { Tour } from '@/types/tour'
+import type { TourFilters } from '@/lib/api-types'
 
 const API = process.env.API_URL!
 
-import type { TourFilters } from '@/lib/api-types'
 export async function getTours(filters: TourFilters = {}): Promise<Tour[]> {
   const qs = new URLSearchParams()
   for (const [k, v] of Object.entries(filters)) if (v) qs.set(k, v)

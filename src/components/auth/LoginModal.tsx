@@ -125,8 +125,8 @@ function OtpStep({ mobile, onDone }: { mobile: string; onDone: () => void }) {
 
   const verify = useMutation({
     mutationFn: () => checkOtp(mobile, code),
-    onSuccess: ({ user }) => {
-      qc.setQueryData(['me'], user)
+    onSuccess: async () => {
+      await qc.invalidateQueries({ queryKey: ['me'] })
       toast.success('با موفقیت وارد شدید')
       onDone()
     },

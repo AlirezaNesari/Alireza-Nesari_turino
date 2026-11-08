@@ -8,11 +8,23 @@ import { formatPrice, shortId } from '@/utils/format'
 import type { UserTour } from '@/types/tour'
 
 export default function MyTours() {
-  const { data, isPending, isError } = useQuery({ queryKey: ['userTours'], queryFn: getUserTours })
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['userTours'],
+    queryFn: getUserTours,
+  })
 
-  if (isPending) return <div className="h-40 animate-pulse rounded-xl bg-gray-100" />
-  if (isError) return <p className="py-10 text-center text-red-600">خطا در دریافت تورها.</p>
-  if (!data.length) return <p className="rounded-xl bg-gray-50 py-12 text-center text-gray-500">هنوز توری خریداری نکرده‌اید.</p>
+  if (isPending)
+    return <div className="h-40 animate-pulse rounded-xl bg-gray-100" />
+  if (isError)
+    return (
+      <p className="py-10 text-center text-red-600">خطا در دریافت تورها.</p>
+    )
+  if (!data.length)
+    return (
+      <p className="rounded-xl bg-gray-50 py-12 text-center text-gray-500">
+        هنوز توری خریداری نکرده‌اید.
+      </p>
+    )
 
   return (
     <ul className="space-y-4">
@@ -50,7 +62,8 @@ function TourRow({ t }: { t: UserTour }) {
           · {formatJalaliFull(t.startDate)}
         </span>
         <span>
-          <b className="text-gray-900">تاریخ برگشت</b> · {formatJalaliFull(t.endDate)}
+          <b className="text-gray-900">تاریخ برگشت</b> ·{' '}
+          {formatJalaliFull(t.endDate)}
         </span>
       </div>
       <div className="flex flex-wrap gap-8 border-t border-gray-100 px-4 py-3 text-gray-500">
@@ -58,7 +71,8 @@ function TourRow({ t }: { t: UserTour }) {
           شماره تور <b className="text-gray-900">{shortId(t.id)}</b>
         </span>
         <span>
-          مبلغ پرداخت شده <b className="text-gray-900">{formatPrice(t.price)}</b> تومان
+          مبلغ پرداخت شده{' '}
+          <b className="text-gray-900">{formatPrice(t.price)}</b> تومان
         </span>
       </div>
     </li>

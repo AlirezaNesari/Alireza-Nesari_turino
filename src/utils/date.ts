@@ -3,8 +3,29 @@ import { toFa } from '@/utils/digits'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
-export const MONTHS = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند']
-export const WEEKDAYS = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه']
+export const MONTHS = [
+  'فروردین',
+  'اردیبهشت',
+  'خرداد',
+  'تیر',
+  'مرداد',
+  'شهریور',
+  'مهر',
+  'آبان',
+  'آذر',
+  'دی',
+  'بهمن',
+  'اسفند',
+]
+export const WEEKDAYS = [
+  'شنبه',
+  'یکشنبه',
+  'دوشنبه',
+  'سه‌شنبه',
+  'چهارشنبه',
+  'پنجشنبه',
+  'جمعه',
+]
 
 export function isoToJalali(iso: string) {
   const [y, m, d] = iso.slice(0, 10).split('-').map(Number)
@@ -44,13 +65,21 @@ export function formatJalaliFull(iso: string) {
 export const monthName = (iso: string) => MONTHS[isoToJalali(iso).jm - 1]
 
 export function tourDuration(start: string, end: string) {
-  const diff = Math.round((Date.parse(end.slice(0, 10)) - Date.parse(start.slice(0, 10))) / 86400000)
+  const diff = Math.round(
+    (Date.parse(end.slice(0, 10)) - Date.parse(start.slice(0, 10))) / 86400000,
+  )
   const days = Math.max(diff, 1)
   return { days, nights: Math.max(days - 1, 0) }
 }
 
 export function formatDateTime(iso: string) {
   const d = new Date(iso)
-  const { jy, jm, jd } = jalaali.toJalaali(d.getFullYear(), d.getMonth() + 1, d.getDate())
-  return toFa(`${jy}/${pad(jm)}/${pad(jd)} - ${pad(d.getHours())}:${pad(d.getMinutes())}`)
+  const { jy, jm, jd } = jalaali.toJalaali(
+    d.getFullYear(),
+    d.getMonth() + 1,
+    d.getDate(),
+  )
+  return toFa(
+    `${jy}/${pad(jm)}/${pad(jd)} - ${pad(d.getHours())}:${pad(d.getMinutes())}`,
+  )
 }
