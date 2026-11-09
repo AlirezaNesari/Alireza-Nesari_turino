@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { ButtonLoader } from '@/components/ui/Loaders'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import OtpInput from 'react18-input-otp'
@@ -112,7 +113,7 @@ function MobileStep({ onNext }: { onNext: (m: string) => void }) {
         disabled={mutation.isPending}
         className="bg-primary w-full rounded-lg py-3 font-medium text-white disabled:opacity-60"
       >
-        {mutation.isPending ? 'در حال ارسال...' : 'ارسال کد تایید'}
+        {mutation.isPending ? <ButtonLoader /> : 'ارسال کد تایید'}
       </button>
     </form>
   )
@@ -170,7 +171,7 @@ function OtpStep({ mobile, onDone }: { mobile: string; onDone: () => void }) {
         disabled={code.length !== 6 || verify.isPending}
         className="bg-primary w-full rounded-lg py-3 font-medium text-white disabled:opacity-60"
       >
-        {verify.isPending ? 'در حال بررسی...' : 'ورود به تورینو'}
+        {verify.isPending ? <ButtonLoader /> : 'ورود به تورینو'}
       </button>
     </div>
   )

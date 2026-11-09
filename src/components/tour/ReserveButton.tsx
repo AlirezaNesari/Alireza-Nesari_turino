@@ -2,11 +2,12 @@
 import { useRouter } from 'next/navigation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { ButtonLoader } from '@/components/ui/Loaders'
+import { btnPrimary } from '@/components/ui/styles'
 import { useMe } from '@/hooks/useMe'
 import { useAuthModal } from '@/store/useAuthModal'
 import { reserveTour } from '@/services/tours'
 import { getErrorMessage } from '@/utils/error'
-import { btnPrimary } from '@/components/ui/styles'
 
 export default function ReserveButton({
   tourId,
@@ -33,13 +34,15 @@ export default function ReserveButton({
     <button
       disabled={soldOut || reserve.isPending}
       onClick={() => (user ? reserve.mutate() : show())}
-      className={`${btnPrimary} px-10 py-3 text-base`}
+      className={`${btnPrimary} min-w-40 px-10 py-3 text-base`}
     >
-      {soldOut
-        ? 'ظرفیت تکمیل است'
-        : reserve.isPending
-          ? 'لطفا صبر کنید...'
-          : 'رزرو و خرید'}
+      {soldOut ? (
+        'ظرفیت تکمیل است'
+      ) : reserve.isPending ? (
+        <ButtonLoader />
+      ) : (
+        'رزرو و خرید'
+      )}
     </button>
   )
 }

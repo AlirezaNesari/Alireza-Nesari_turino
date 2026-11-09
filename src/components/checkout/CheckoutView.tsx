@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
+import { ButtonLoader, PageLoader } from '@/components/ui/Loaders'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -79,10 +80,7 @@ export default function CheckoutView() {
       </div>
     )
 
-  if (isPending)
-    return (
-      <div className="mx-auto h-64 max-w-7xl animate-pulse rounded-xl bg-gray-100 md:m-8" />
-    )
+  if (isPending) return <PageLoader label="در حال دریافت اطلاعات خرید..." />
 
   if (isError)
     return (
@@ -189,7 +187,7 @@ export default function CheckoutView() {
           disabled={order.isPending}
           className={`${btnPrimary} w-full py-3`}
         >
-          {order.isPending ? 'در حال ثبت...' : 'ثبت و خرید نهایی'}
+          {order.isPending ? <ButtonLoader /> : 'ثبت و خرید نهایی'}
         </button>
       </aside>
     </div>
