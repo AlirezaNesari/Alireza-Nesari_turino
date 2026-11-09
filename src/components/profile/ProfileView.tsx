@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import DatePicker from '@/components/ui/DatePicker'
+import { ButtonLoader, PageLoader } from '@/components/ui/Loaders'
 import { btnOutline, btnPrimary, inputCls } from '@/components/ui/styles'
 import { useMe } from '@/hooks/useMe'
 import { useUpdateProfile } from '@/hooks/useUpdateProfile'
@@ -17,14 +18,7 @@ const BIRTH_YEARS: [number, number] = [1300, 1410]
 export default function ProfileView() {
   const { data: user, isPending } = useMe()
 
-  if (isPending)
-    return (
-      <div className="space-y-4">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="h-36 animate-pulse rounded-xl bg-gray-100" />
-        ))}
-      </div>
-    )
+  if (isPending) return <PageLoader label="در حال دریافت اطلاعات..." />
   if (!user)
     return (
       <p className="py-10 text-center text-gray-500">
@@ -52,7 +46,7 @@ function Card({
 }) {
   return (
     <section className="rounded-xl border border-gray-200 bg-white p-4">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="font-bold">{title}</h2>
         {action}
       </div>
@@ -63,9 +57,9 @@ function Card({
 
 function Row({ label, value }: { label: string; value?: string | null }) {
   return (
-    <div className="flex flex-col gap-1 py-2 text-sm sm:flex-row sm:items-center">
-      <span className="text-gray-500 sm:w-44">{label}</span>
-      <span className="font-medium">{value || '—'}</span>
+    <div className="flex items-center gap-4 py-2 text-sm">
+      <span className="w-28 shrink-0 text-gray-500 sm:w-44">{label}</span>
+      <span className="font-medium break-all">{value || '—'}</span>
     </div>
   )
 }
@@ -94,10 +88,15 @@ function FormActions({
 }) {
   return (
     <div className="mt-4 flex gap-3 border-t border-gray-100 pt-4">
-      <button disabled={pending} className={btnPrimary}>
-        {pending ? 'در حال ذخیره...' : 'تایید'}
+      <button disabled={pending} className={`${btnPrimary} min-w-24`}>
+        {pending ? <ButtonLoader /> : 'تایید'}
       </button>
-      <button type="button" onClick={onCancel} className={btnOutline}>
+      <button
+        type="button"
+        disabled={pending}
+        onClick={onCancel}
+        className={btnOutline}
+      >
         انصراف
       </button>
     </div>
@@ -140,21 +139,36 @@ function AccountCard({ user }: { user: User }) {
     >
       <Row label="شماره موبایل" value={toFa(user.mobile)} />
       {editing ? (
-        <form onSubmit={handleSubmit((v) => update.mutate(v))}>
-          <input
-            {...register('email')}
-            dir="ltr"
-            placeholder="آدرس ایمیل"
-            className={inputCls}
-          />
-          <Err msg={errors.email?.message} />
-          <FormActions
-            pending={update.isPending}
-            onCancel={() => {
+        <form
+          onSubmit={handleSubmit((v) => update.mutate(v))}
+          className="mt-2 flex items-start gap-2"
+        >
+          <div className="min-w-0 flex-1">
+            <input
+              {...register('email')}
+              dir="ltr"
+              placeholder="آدرس ایمیل"
+              className={inputCls}
+            />
+            <Err msg={errors.email?.message} />
+          </div>
+          <button
+            disabled={update.isPending}
+            className={`${btnPrimary} min-w-20`}
+          >
+            {update.isPending ? <ButtonLoader /> : 'تایید'}
+          </button>
+          <button
+            type="button"
+            disabled={update.isPending}
+            onClick={() => {
               reset()
               setEditing(false)
             }}
-          />
+            className={btnOutline}
+          >
+            انصراف
+          </button>
         </form>
       ) : (
         <Row label="ایمیل" value={user.email} />
@@ -220,7 +234,7 @@ function PersonalCard({ user }: { user: User }) {
     >
       {editing ? (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
               <input
                 {...register('fullName')}
@@ -238,7 +252,17 @@ function PersonalCard({ user }: { user: User }) {
               />
               <Err msg={errors.nationalCode?.message} />
             </div>
-            <div>
+            <div className="sm:order-4">
+              <select {...register('gender')} className={inputCls}>
+                <option value="" disabled>
+                  جنسیت
+                </option>
+                <option value="male">مرد</option>
+                <option value="female">زن</option>
+              </select>
+              <Err msg={errors.gender?.message} />
+            </div>
+            <div className="sm:order-3">
               <Controller
                 control={control}
                 name="birthDate"
@@ -252,16 +276,6 @@ function PersonalCard({ user }: { user: User }) {
                 )}
               />
               <Err msg={errors.birthDate?.message} />
-            </div>
-            <div>
-              <select {...register('gender')} className={inputCls}>
-                <option value="" disabled>
-                  جنسیت
-                </option>
-                <option value="male">مرد</option>
-                <option value="female">زن</option>
-              </select>
-              <Err msg={errors.gender?.message} />
             </div>
           </div>
           <FormActions
@@ -280,10 +294,6 @@ function PersonalCard({ user }: { user: User }) {
             value={user.nationalCode && toFa(user.nationalCode)}
           />
           <Row
-            label="تاریخ تولد"
-            value={user.birthDate && formatJalali(user.birthDate)}
-          />
-          <Row
             label="جنسیت"
             value={
               user.gender === 'male'
@@ -292,6 +302,10 @@ function PersonalCard({ user }: { user: User }) {
                   ? 'زن'
                   : undefined
             }
+          />
+          <Row
+            label="تاریخ تولد"
+            value={user.birthDate && formatJalali(user.birthDate)}
           />
         </>
       )}
@@ -307,16 +321,16 @@ const bankSchema = yup.object({
     .transform(digits)
     .required('شماره کارت را وارد کنید')
     .matches(/^\d{16}$/, 'شماره کارت باید ۱۶ رقم باشد'),
-  shaba_code: yup
-    .string()
-    .transform((v) => digits(v).toUpperCase())
-    .required('شماره شبا را وارد کنید')
-    .matches(/^(IR)?\d{24}$/, 'شماره شبا معتبر نیست (۲۴ رقم)'),
   accountIdentifier: yup
     .string()
     .transform(digits)
     .required('شماره حساب را وارد کنید')
     .matches(/^\d{6,20}$/, 'شماره حساب معتبر نیست'),
+  shaba_code: yup
+    .string()
+    .transform((v) => digits(v).toUpperCase())
+    .required('شماره شبا را وارد کنید')
+    .matches(/^(IR)?\d{24}$/, 'شماره شبا معتبر نیست (۲۴ رقم)'),
 })
 
 function BankCard({ user }: { user: User }) {
@@ -332,8 +346,8 @@ function BankCard({ user }: { user: User }) {
     resolver: yupResolver(bankSchema),
     defaultValues: {
       debitCard_code: p?.debitCard_code ?? '',
-      shaba_code: p?.shaba_code ?? '',
       accountIdentifier: p?.accountIdentifier ?? '',
+      shaba_code: p?.shaba_code ?? '',
     },
   })
 
@@ -344,7 +358,7 @@ function BankCard({ user }: { user: User }) {
     >
       {editing ? (
         <form onSubmit={handleSubmit((v) => update.mutate({ payment: v }))}>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
             <div>
               <input
                 {...register('debitCard_code')}
@@ -356,21 +370,21 @@ function BankCard({ user }: { user: User }) {
             </div>
             <div>
               <input
-                {...register('shaba_code')}
-                dir="ltr"
-                placeholder="شماره شبا"
-                className={inputCls}
-              />
-              <Err msg={errors.shaba_code?.message} />
-            </div>
-            <div>
-              <input
                 {...register('accountIdentifier')}
                 inputMode="numeric"
                 placeholder="شماره حساب"
                 className={inputCls}
               />
               <Err msg={errors.accountIdentifier?.message} />
+            </div>
+            <div>
+              <input
+                {...register('shaba_code')}
+                dir="ltr"
+                placeholder="شماره شبا"
+                className={inputCls}
+              />
+              <Err msg={errors.shaba_code?.message} />
             </div>
           </div>
           <FormActions
@@ -387,11 +401,11 @@ function BankCard({ user }: { user: User }) {
             label="شماره کارت"
             value={p?.debitCard_code && toFa(p.debitCard_code)}
           />
-          <Row label="شماره شبا" value={p?.shaba_code} />
           <Row
             label="شماره حساب"
             value={p?.accountIdentifier && toFa(p.accountIdentifier)}
           />
+          <Row label="شماره شبا" value={p?.shaba_code} />
         </>
       )}
     </Card>
