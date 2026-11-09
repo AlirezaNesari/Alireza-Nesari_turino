@@ -4,8 +4,17 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ChevronDown, House, LogOut, Megaphone, Menu, Phone, Plane, User as UserIcon } from 'lucide-react'
-import { toast } from 'sonner'
+import {
+  ChevronDown,
+  House,
+  LogOut,
+  Megaphone,
+  Menu,
+  Phone,
+  Plane,
+  User as UserIcon,
+} from 'lucide-react'
+import { toast } from 'react-toastify'
 import { useMe } from '@/hooks/useMe'
 import { useAuthModal } from '@/store/useAuthModal'
 import { logout } from '@/services/auth'
@@ -42,14 +51,22 @@ export default function Header() {
           <Menu />
         </button>
         <Link href="/" className="hidden md:block">
-          <Image src="/images/logo.svg" alt="تورینو" width={120} height={32} priority />
+          <Image
+            src="/images/logo.svg"
+            alt="تورینو"
+            width={120}
+            height={32}
+            priority
+          />
         </Link>
         <nav className="hidden gap-8 text-sm md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className={pathname === l.href ? 'text-primary' : 'hover:text-primary'}
+              className={
+                pathname === l.href ? 'text-primary' : 'hover:text-primary'
+              }
             >
               {l.label}
             </Link>
@@ -61,7 +78,10 @@ export default function Header() {
       </div>
 
       {menu && (
-        <div className="fixed inset-0 z-40 bg-black/40 md:hidden" onClick={() => setMenu(false)}>
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={() => setMenu(false)}
+        >
           <nav
             onClick={(e) => e.stopPropagation()}
             className="absolute inset-y-0 start-0 w-64 max-w-[70%] rounded-e-2xl bg-white pt-16 shadow-xl"
@@ -102,11 +122,13 @@ function AuthArea() {
       qc.setQueryData(['me'], null)
       setOpen(false)
       toast.success('از حساب کاربری خارج شدید')
-      if (pathname.startsWith('/profile') || pathname.startsWith('/checkout')) router.push('/')
+      if (pathname.startsWith('/profile') || pathname.startsWith('/checkout'))
+        router.push('/')
     },
   })
 
-  if (isPending) return <div className="h-9 w-28 animate-pulse rounded-lg bg-gray-100" />
+  if (isPending)
+    return <div className="h-9 w-28 animate-pulse rounded-lg bg-gray-100" />
 
   if (!user)
     return (
@@ -115,7 +137,13 @@ function AuthArea() {
         aria-label="ورود | ثبت نام"
         className="border-primary text-primary flex items-center gap-2 rounded-lg border p-2 text-sm font-medium md:px-4 md:py-1.5"
       >
-        <Image src="/icons/login.svg" alt="" width={20} height={20} className="md:hidden" />
+        <Image
+          src="/icons/login.svg"
+          alt=""
+          width={20}
+          height={20}
+          className="md:hidden"
+        />
         <UserIcon size={16} className="hidden md:block" />
         <span className="hidden md:inline">ورود | ثبت نام</span>
       </button>
@@ -123,7 +151,10 @@ function AuthArea() {
 
   return (
     <div className="relative">
-      <button onClick={() => setOpen((o) => !o)} className="text-primary flex items-center gap-2 text-sm">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="text-primary flex items-center gap-2 text-sm"
+      >
         <UserIcon size={16} />
         {toFa(user.mobile)}
         <ChevronDown size={16} />

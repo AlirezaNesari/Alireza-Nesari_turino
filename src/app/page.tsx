@@ -24,7 +24,7 @@ export default async function Home({
   const tours = await getTours(filters)
   return (
     <>
-           <Image
+      <Image
         src="/images/home/hero.png"
         alt=""
         width={1200}

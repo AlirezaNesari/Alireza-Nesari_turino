@@ -10,9 +10,21 @@ const slides = [
     text: 'اگر دوست دارید در دل طبیعت چادر بزنید یا از جاذبه‌های تاریخی و گردشگری دیدن کنید، تورهای طبیعت‌گردی و تاریخی را از تورینو بخرید.',
     image: '/images/home/why/why-1.png',
   },
-  { title: 'تورهای متنوع', text: 'متن اسلاید دوم را از فیگما جایگزین کن.', image: '/images/home/why/why-2.png' },
-  { title: 'قیمت مناسب', text: 'متن اسلاید سوم را از فیگما جایگزین کن.', image: '/images/home/why/why-3.png' },
-  { title: 'پشتیبانی ۲۴ ساعته', text: 'متن اسلاید چهارم را از فیگما جایگزین کن.', image: '/images/home/why/why-4.png' },
+  {
+    title: 'تورهای متنوع',
+    text: 'متن اسلاید دوم را از فیگما جایگزین کن.',
+    image: '/images/home/why/why-2.png',
+  },
+  {
+    title: 'قیمت مناسب',
+    text: 'متن اسلاید سوم را از فیگما جایگزین کن.',
+    image: '/images/home/why/why-3.png',
+  },
+  {
+    title: 'پشتیبانی ۲۴ ساعته',
+    text: 'متن اسلاید چهارم را از فیگما جایگزین کن.',
+    image: '/images/home/why/why-4.png',
+  },
 ]
 
 export default function WhyTurino() {
@@ -20,14 +32,21 @@ export default function WhyTurino() {
   const s = slides[i]
   const next = slides[i + 1]
   const next2 = slides[i + 2]
-  const go = (d: number) => setI((n) => Math.min(Math.max(n + d, 0), slides.length - 1))
+  const go = (d: number) =>
+    setI((n) => Math.min(Math.max(n + d, 0), slides.length - 1))
 
   return (
     <section className="mx-auto mt-12 max-w-7xl px-4 md:mt-16">
       <div className="grid items-center gap-6 md:grid-cols-2 md:gap-8">
         <div>
           <h2 className="flex items-center gap-2 text-xl font-bold md:text-2xl">
-            <Image src="/images/home/why-icon.svg" alt="" width={36} height={36} className="size-9" />
+            <Image
+              src="/images/home/why-icon.svg"
+              alt=""
+              width={36}
+              height={36}
+              className="size-9"
+            />
             چرا <span className="text-primary">تورینو</span> ؟
           </h2>
           <div className="hidden md:block">
@@ -38,10 +57,25 @@ export default function WhyTurino() {
 
         <div>
           <div className="relative h-48 w-full md:h-80">
-            {next2 && <Peek src={next2.image} className="end-0 top-[12%] z-0 h-[76%] w-[36%]" />}
-            {next && <Peek src={next.image} className="end-[6%] top-[6%] z-10 h-[88%] w-[40%]" />}
+            {next2 && (
+              <Peek
+                src={next2.image}
+                className="end-0 top-[12%] z-0 h-[76%] w-[36%]"
+              />
+            )}
+            {next && (
+              <Peek
+                src={next.image}
+                className="end-[6%] top-[6%] z-10 h-[88%] w-[40%]"
+              />
+            )}
             <div className="absolute start-0 top-0 z-20 h-full w-[78%] overflow-hidden rounded-3xl">
-              <Image src={s.image} alt={s.title} fill className="object-cover" />
+              <Image
+                src={s.image}
+                alt={s.title}
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
 

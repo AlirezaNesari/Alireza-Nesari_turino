@@ -23,7 +23,10 @@ export default function Features() {
     <section className="mx-auto mt-12 max-w-7xl border-t border-gray-200 px-4 pt-8 md:mt-16 md:pt-10">
       <div className="grid gap-8 md:grid-cols-3 md:gap-6">
         {items.map((f) => (
-          <div key={f.title} className="flex items-center justify-between gap-4">
+          <div
+            key={f.title}
+            className="flex items-center justify-between gap-4"
+          >
             <div>
               <h3 className="text-sm font-bold md:text-base">{f.title}</h3>
               <p className="mt-1 text-xs text-gray-500 md:text-sm">{f.text}</p>

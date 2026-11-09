@@ -10,7 +10,9 @@ export default function PhoneBanner() {
             <h2 className="text-xl leading-9 font-bold md:text-3xl">
               خرید تلفنی از <span className="text-primary-dark">تورینو</span>
             </h2>
-            <p className="mt-2 text-sm md:mt-3 md:text-lg">به هرکجا که میخواهید!</p>
+            <p className="mt-2 text-sm md:mt-3 md:text-lg">
+              به هرکجا که میخواهید!
+            </p>
           </div>
           <div className="absolute inset-y-0 end-0 w-[52%] md:w-[45%]">
             <Image
@@ -27,7 +29,9 @@ export default function PhoneBanner() {
             <bdi dir="ltr">۰۲۱-۱۸۴۰</bdi>
             <Phone size={20} />
           </p>
-          <span className="bg-primary-dark rounded-lg px-6 py-3 text-sm text-white">اطلاعات بیشتر</span>
+          <span className="bg-primary-dark rounded-lg px-6 py-3 text-sm text-white">
+            اطلاعات بیشتر
+          </span>
         </div>
       </div>
     </section>

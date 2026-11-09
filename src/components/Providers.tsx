@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from 'sonner'
+import { ToastContainer } from 'react-toastify'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
@@ -13,7 +13,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       {children}
-      <Toaster position="top-center" richColors dir="rtl" />
+      <ToastContainer
+        position="top-center"
+        rtl
+        autoClose={3500}
+        closeOnClick
+        pauseOnHover
+        theme="colored"
+      />
     </QueryClientProvider>
   )
 }

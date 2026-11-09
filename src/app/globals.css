@@ -11,3 +11,6 @@ body {
   background: #fff;
   color: #282828;
 }
+:root {
+  --toastify-font-family: var(--font-vazir), system-ui, sans-serif;
+}

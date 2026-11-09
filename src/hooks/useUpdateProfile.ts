@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { toast } from 'react-toastify'
 import { updateProfile } from '@/services/user'
 import { getErrorMessage } from '@/utils/error'
 

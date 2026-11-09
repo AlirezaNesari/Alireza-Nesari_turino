@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { toast } from 'react-toastify'
 import { useMe } from '@/hooks/useMe'
 import { useAuthModal } from '@/store/useAuthModal'
 import { reserveTour } from '@/services/tours'
