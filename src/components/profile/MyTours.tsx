@@ -29,9 +29,22 @@ export default function MyTours() {
   }, [error])
 
   if (isPending) return <PageLoader label="در حال دریافت تورهای شما..." />
-  if (isError) return <ErrorState message="خطا در دریافت تورها." onRetry={() => refetch()} retrying={isRefetching} />
+  if (isError)
+    return (
+      <ErrorState
+        message="خطا در دریافت تورها."
+        onRetry={() => refetch()}
+        retrying={isRefetching}
+      />
+    )
   if (!data.length)
-    return <EmptyState message="هنوز توری خریداری نکرده‌اید." href="/" action="مشاهده‌ی تورها" />
+    return (
+      <EmptyState
+        message="هنوز توری خریداری نکرده‌اید."
+        href="/"
+        action="مشاهده‌ی تورها"
+      />
+    )
 
   return (
     <ul className="space-y-4">
@@ -53,12 +66,18 @@ function TourRow({ t }: { t: UserTour }) {
           {t.title}
         </span>
         <span className="flex items-center gap-1.5">
-          {vehicleSvg ? <MaskIcon src={vehicleSvg} /> : <vehicle.icon size={16} />}
+          {vehicleSvg ? (
+            <MaskIcon src={vehicleSvg} />
+          ) : (
+            <vehicle.icon size={16} />
+          )}
           سفر با {vehicle.label}
         </span>
         <span
           className={`rounded-full px-2.5 py-0.5 text-[11px] sm:text-xs ${
-            t.ended ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+            t.ended
+              ? 'bg-green-100 text-green-700'
+              : 'bg-yellow-100 text-yellow-700'
           }`}
         >
           {t.ended ? 'به اتمام رسیده' : 'در حال برگزاری'}
@@ -85,7 +104,8 @@ function TourRow({ t }: { t: UserTour }) {
           شماره تور <b className="text-gray-900">{shortId(t.id)}</b>
         </span>
         <span>
-          مبلغ پرداخت شده <b className="text-gray-900">{formatPrice(t.price)}</b> تومان
+          مبلغ پرداخت شده{' '}
+          <b className="text-gray-900">{formatPrice(t.price)}</b> تومان
         </span>
       </div>
     </li>

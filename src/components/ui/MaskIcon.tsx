@@ -1,4 +1,12 @@
-export default function MaskIcon({ src, size = 16, className = '' }: { src: string; size?: number; className?: string }) {
+export default function MaskIcon({
+  src,
+  size = 16,
+  className = '',
+}: {
+  src: string
+  size?: number
+  className?: string
+}) {
   const mask = `url(${src}) center / contain no-repeat`
   return (
     <span
