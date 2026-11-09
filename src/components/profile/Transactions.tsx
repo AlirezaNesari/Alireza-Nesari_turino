@@ -1,55 +1,89 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+import { PageLoader } from '@/components/ui/Loaders'
+import { EmptyState, ErrorState } from '@/components/ui/States'
+import { btnOutline } from '@/components/ui/styles'
 import { getTransactions } from '@/services/tours'
 import { formatDateTime } from '@/utils/date'
+import { getErrorMessage } from '@/utils/error'
 import { formatPrice, shortId } from '@/utils/format'
 
 const TYPES: Record<string, string> = { Purchase: 'ثبت نام در تور گردشگری' }
+const PAGE = 10
 
 export default function Transactions() {
-  const { data, isPending, isError } = useQuery({
+  const [count, setCount] = useState(PAGE)
+  const { data, error, isPending, isError, isRefetching, refetch } = useQuery({
     queryKey: ['transactions'],
     queryFn: getTransactions,
   })
 
-  if (isPending)
-    return <div className="h-40 animate-pulse rounded-xl bg-gray-100" />
+  useEffect(() => {
+    if (error)
+      toast.error(getErrorMessage(error), { toastId: 'transactions-error' })
+  }, [error])
+
+  if (isPending) return <PageLoader label="در حال دریافت تراکنش‌ها..." />
   if (isError)
     return (
-      <p className="py-10 text-center text-red-600">خطا در دریافت تراکنش‌ها.</p>
+      <ErrorState
+        message="خطا در دریافت تراکنش‌ها."
+        onRetry={() => refetch()}
+        retrying={isRefetching}
+      />
     )
-  if (!data.length)
-    return (
-      <p className="rounded-xl bg-gray-50 py-12 text-center text-gray-500">
-        تراکنشی ثبت نشده است.
-      </p>
-    )
+  if (!data.length) return <EmptyState message="تراکنشی ثبت نشده است." />
+
+  const rows = [...data].reverse()
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-      <table className="w-full min-w-[36rem] text-sm">
-        <thead className="bg-gray-100">
-          <tr>
-            {['تاریخ و ساعت', 'مبلغ (تومان)', 'نوع تراکنش', 'شماره سفارش'].map(
-              (h) => (
-                <th key={h} className="px-4 py-3 text-start font-medium">
-                  {h}
-                </th>
-              ),
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {[...data].reverse().map((t) => (
-            <tr key={t.id} className="border-t border-gray-100">
-              <td className="px-4 py-3">{formatDateTime(t.createdAt)}</td>
-              <td className="px-4 py-3">{formatPrice(t.amount)}</td>
-              <td className="px-4 py-3">{TYPES[t.type] ?? t.type}</td>
-              <td className="px-4 py-3">{shortId(t.id)}</td>
+    <div>
+      <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <table className="w-full text-xs sm:text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-3 py-3 text-start font-medium sm:px-4">
+                تاریخ و ساعت
+              </th>
+              <th className="px-3 py-3 text-start font-medium sm:px-4">
+                مبلغ (تومان)
+              </th>
+              <th className="hidden px-4 py-3 text-start font-medium sm:table-cell">
+                نوع تراکنش
+              </th>
+              <th className="px-3 py-3 text-start font-medium sm:px-4">
+                شماره سفارش
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.slice(0, count).map((t) => (
+              <tr key={t.id} className="border-t border-gray-100">
+                <td className="px-3 py-3 whitespace-nowrap sm:px-4">
+                  {formatDateTime(t.createdAt)}
+                </td>
+                <td className="px-3 py-3 sm:px-4">{formatPrice(t.amount)}</td>
+                <td className="hidden px-4 py-3 sm:table-cell">
+                  {TYPES[t.type] ?? t.type}
+                </td>
+                <td className="px-3 py-3 sm:px-4">{shortId(t.id)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {count < rows.length && (
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => setCount((c) => c + PAGE)}
+            className={btnOutline}
+          >
+            نمایش بیشتر
+          </button>
+        </div>
+      )}
     </div>
   )
 }
