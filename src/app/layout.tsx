@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl" className={vazir.variable}>
-      <body className="flex min-h-dvh flex-col font-sans">
+      <body className="flex min-h-dvh flex-col overflow-x-clip font-sans">
         <Providers>
           <Header />
           <main className="flex-1">{children}</main>

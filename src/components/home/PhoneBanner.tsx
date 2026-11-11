@@ -3,23 +3,24 @@ import { Phone } from 'lucide-react'
 
 export default function PhoneBanner() {
   return (
-    <section className="mx-auto mt-12 max-w-7xl px-4 md:mt-16">
-      <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white md:flex-row">
-        <div className="bg-primary relative h-48 flex-1 p-5 text-white md:h-60 md:px-10 md:py-0">
-          <div className="relative z-10 max-w-[48%] md:flex md:h-full md:max-w-[45%] md:flex-col md:justify-center">
-            <h2 className="text-xl leading-9 font-bold md:text-3xl">
+    <section className="mx-auto mt-14 max-w-7xl px-4 md:mt-16">
+      <div className="relative flex flex-col rounded-xl border border-gray-200 bg-white md:flex-row">
+        <div className="bg-primary relative h-[133px] rounded-t-[11px] text-white md:h-60 md:flex-1 md:rounded-s-[11px] md:rounded-t-none">
+          <div className="absolute inset-y-0 start-4 z-10 flex flex-col justify-center md:start-10">
+            <h2 className="text-lg font-bold whitespace-nowrap md:text-3xl">
               خرید تلفنی از <span className="text-primary-dark">تورینو</span>
             </h2>
             <p className="mt-2 text-sm md:mt-3 md:text-lg">
               به هرکجا که میخواهید!
             </p>
           </div>
-          <div className="absolute inset-y-0 end-0 w-[52%] md:w-[45%]">
+          <div className="absolute end-3 bottom-0 aspect-square w-[52%] md:inset-y-0 md:end-0 md:aspect-auto md:h-full md:w-[45%]">
             <Image
               src="/images/home/phone-banner.png"
               alt="خرید تلفنی"
               fill
-              className="object-contain object-left-bottom"
+              sizes="(min-width: 768px) 40vw, 55vw"
+              className="object-cover object-bottom md:object-contain md:object-left-bottom"
             />
           </div>
         </div>

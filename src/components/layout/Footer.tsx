@@ -18,7 +18,7 @@ const cols = [
 
 export default function Footer() {
   return (
-    <footer className="mt-16 bg-white">
+    <footer className="bg-white">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid grid-cols-2 gap-x-4 gap-y-8 border-t border-dashed border-gray-300 py-8 md:grid-cols-[auto_auto_1fr] md:gap-x-24 md:border-solid md:border-gray-200">
           {cols.map((c) => (

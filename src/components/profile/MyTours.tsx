@@ -59,17 +59,17 @@ function TourRow({ t }: { t: UserTour }) {
   const vehicle = getVehicle(t.fleetVehicle)
   const vehicleSvg = VEHICLE_ICONS[t.fleetVehicle.toLowerCase()]
   return (
-    <li className="overflow-hidden rounded-xl border border-gray-200 bg-white text-xs sm:text-sm">
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 pt-4">
+    <li className="overflow-hidden rounded-xl border border-gray-300 bg-white text-xs sm:text-sm">
+      <div className="grid grid-cols-[1fr_auto_auto] items-center gap-x-3 gap-y-3 px-4 py-4 md:grid-cols-[1.4fr_1fr_auto] md:gap-x-6">
         <span className="flex items-center gap-2 font-medium sm:text-base">
-          <MaskIcon src="/icons/profile/tour.svg" />
+          <MaskIcon src="/icons/profile/tour.svg" size={20} />
           {t.title}
         </span>
-        <span className="flex items-center gap-1.5">
+        <span className="flex items-center gap-2">
           {vehicleSvg ? (
-            <MaskIcon src={vehicleSvg} />
+            <MaskIcon src={vehicleSvg} size={20} />
           ) : (
-            <vehicle.icon size={16} />
+            <vehicle.icon size={20} />
           )}
           سفر با {vehicle.label}
         </span>
@@ -82,30 +82,29 @@ function TourRow({ t }: { t: UserTour }) {
         >
           {t.ended ? 'به اتمام رسیده' : 'در حال برگزاری'}
         </span>
-      </div>
 
-      <div className="space-y-3 px-4 py-4 text-gray-600">
-        <p className="flex flex-wrap items-center gap-x-2">
+        <p className="col-span-3 flex flex-wrap items-center gap-x-2 text-gray-500 md:col-span-1">
           <b className="text-gray-900">
             {cityName(t.origin)} به {cityName(t.destination)}
           </b>
           <span>•</span>
           {formatJalaliFull(t.startDate)}
         </p>
-        <p className="flex flex-wrap items-center gap-x-2">
+        <p className="col-span-3 flex flex-wrap items-center gap-x-2 text-gray-500 md:col-span-1">
           <b className="text-gray-900">تاریخ برگشت</b>
           <span>•</span>
           {formatJalaliFull(t.endDate)}
         </p>
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-gray-100 px-4 py-3 text-gray-500">
-        <span>
+      <div className="flex items-center justify-between border-t border-gray-300 px-4 py-3 text-gray-500 md:justify-start">
+        <span className="pe-4">
           شماره تور <b className="text-gray-900">{shortId(t.id)}</b>
         </span>
-        <span>
+        <span className="border-s border-gray-300 ps-4">
           مبلغ پرداخت شده{' '}
-          <b className="text-gray-900">{formatPrice(t.price)}</b> تومان
+          <b className="text-gray-900">{formatPrice(t.price)}</b>{' '}
+          <small className="text-[10px]">تومان</small>
         </span>
       </div>
     </li>

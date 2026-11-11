@@ -45,7 +45,7 @@ function Card({
   children: React.ReactNode
 }) {
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-4">
+    <section className="rounded-xl border border-gray-300 bg-white p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="font-bold">{title}</h2>
         {action}
@@ -87,15 +87,18 @@ function FormActions({
   onCancel: () => void
 }) {
   return (
-    <div className="mt-4 flex gap-3 border-t border-gray-100 pt-4">
-      <button disabled={pending} className={`${btnPrimary} min-w-24`}>
+    <div className="-mx-4 mt-4 flex gap-3 border-t border-gray-300 px-4 pt-4 md:justify-end">
+      <button
+        disabled={pending}
+        className={`${btnPrimary} min-w-28 flex-1 md:w-36 md:flex-none`}
+      >
         {pending ? <ButtonLoader /> : 'تایید'}
       </button>
       <button
         type="button"
         disabled={pending}
         onClick={onCancel}
-        className={btnOutline}
+        className={`${btnOutline} flex-1 md:w-36 md:flex-none`}
       >
         انصراف
       </button>
@@ -137,42 +140,39 @@ function AccountCard({ user }: { user: User }) {
         )
       }
     >
-      <Row label="شماره موبایل" value={toFa(user.mobile)} />
-      {editing ? (
-        <form
-          onSubmit={handleSubmit((v) => update.mutate(v))}
-          className="mt-2 flex items-start gap-2"
-        >
-          <div className="min-w-0 flex-1">
-            <input
-              {...register('email')}
-              dir="ltr"
-              placeholder="آدرس ایمیل"
-              className={inputCls}
-            />
-            <Err msg={errors.email?.message} />
-          </div>
-          <button
-            disabled={update.isPending}
-            className={`${btnPrimary} min-w-20`}
+      <div className="md:flex md:items-center md:gap-16">
+        <Row label="شماره موبایل" value={toFa(user.mobile)} />
+        {editing ? (
+          <form
+            onSubmit={handleSubmit((v) => update.mutate(v))}
+            className="mt-2 flex items-start gap-2 md:ms-auto md:mt-0"
           >
-            {update.isPending ? <ButtonLoader /> : 'تایید'}
-          </button>
-          <button
-            type="button"
-            disabled={update.isPending}
-            onClick={() => {
-              reset()
-              setEditing(false)
-            }}
-            className={btnOutline}
-          >
-            انصراف
-          </button>
-        </form>
-      ) : (
-        <Row label="ایمیل" value={user.email} />
-      )}
+            <div className="min-w-0 flex-1 md:w-64 md:flex-none">
+              <input
+                {...register('email')}
+                dir="ltr"
+                placeholder="آدرس ایمیل"
+                className={inputCls}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    reset()
+                    setEditing(false)
+                  }
+                }}
+              />
+              <Err msg={errors.email?.message} />
+            </div>
+            <button
+              disabled={update.isPending}
+              className={`${btnPrimary} min-w-24 md:min-w-32`}
+            >
+              {update.isPending ? <ButtonLoader /> : 'تایید'}
+            </button>
+          </form>
+        ) : (
+          <Row label="ایمیل" value={user.email} />
+        )}
+      </div>
     </Card>
   )
 }
@@ -234,7 +234,7 @@ function PersonalCard({ user }: { user: User }) {
     >
       {editing ? (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <div className="grid gap-3 md:grid-cols-3 md:gap-4">
             <div>
               <input
                 {...register('fullName')}
@@ -252,17 +252,7 @@ function PersonalCard({ user }: { user: User }) {
               />
               <Err msg={errors.nationalCode?.message} />
             </div>
-            <div className="sm:order-4">
-              <select {...register('gender')} className={inputCls}>
-                <option value="" disabled>
-                  جنسیت
-                </option>
-                <option value="male">مرد</option>
-                <option value="female">زن</option>
-              </select>
-              <Err msg={errors.gender?.message} />
-            </div>
-            <div className="sm:order-3">
+            <div className="order-4 md:order-3">
               <Controller
                 control={control}
                 name="birthDate"
@@ -272,10 +262,21 @@ function PersonalCard({ user }: { user: User }) {
                     onChange={(v) => field.onChange(v.start ?? '')}
                     placeholder="تاریخ تولد"
                     yearRange={BIRTH_YEARS}
+                    className="flex w-full items-center gap-2 rounded-lg border border-gray-400 bg-white px-3 py-2.5 text-sm"
                   />
                 )}
               />
               <Err msg={errors.birthDate?.message} />
+            </div>
+            <div className="order-3 md:order-4">
+              <select {...register('gender')} className={inputCls}>
+                <option value="" disabled>
+                  جنسیت
+                </option>
+                <option value="male">مرد</option>
+                <option value="female">زن</option>
+              </select>
+              <Err msg={errors.gender?.message} />
             </div>
           </div>
           <FormActions
@@ -358,7 +359,7 @@ function BankCard({ user }: { user: User }) {
     >
       {editing ? (
         <form onSubmit={handleSubmit((v) => update.mutate({ payment: v }))}>
-          <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid gap-3 md:grid-cols-3 md:gap-4">
             <div>
               <input
                 {...register('debitCard_code')}

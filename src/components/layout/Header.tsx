@@ -160,7 +160,7 @@ function AuthArea() {
         <ChevronDown size={16} />
       </button>
       {open && (
-        <div className="absolute start-0 top-full z-40 mt-2 w-52 rounded-lg border border-gray-200 bg-white text-sm shadow-lg">
+        <div className="absolute end-0 top-full z-40 mt-2 w-52 rounded-lg border border-gray-200 bg-white text-sm shadow-lg">
           <Link
             href="/profile"
             onClick={() => setOpen(false)}
