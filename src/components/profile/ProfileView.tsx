@@ -122,7 +122,7 @@ function AccountCard({ user }: { user: User }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(emailSchema),
-    defaultValues: { email: user.email ?? '' },
+    values: { email: user.email ?? '' },
   })
 
   return (
@@ -208,7 +208,7 @@ function PersonalCard({ user }: { user: User }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(personalSchema),
-    defaultValues: {
+    values: {
       fullName,
       nationalCode: user.nationalCode ?? '',
       birthDate: user.birthDate?.slice(0, 10) ?? '',
@@ -344,7 +344,7 @@ function BankCard({ user }: { user: User }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(bankSchema),
-    defaultValues: {
+    values: {
       debitCard_code: p?.debitCard_code ?? '',
       accountIdentifier: p?.accountIdentifier ?? '',
       shaba_code: p?.shaba_code ?? '',
