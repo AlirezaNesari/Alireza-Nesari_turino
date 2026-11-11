@@ -8,7 +8,7 @@ export default function PhoneBanner() {
         <div className="bg-primary relative h-[133px] rounded-t-[11px] text-white md:h-60 md:flex-1 md:rounded-s-[11px] md:rounded-t-none">
           <div className="absolute inset-y-0 start-4 z-10 flex flex-col justify-center md:start-10">
             <h2 className="text-lg font-bold whitespace-nowrap md:text-3xl">
-              خرید تلفنی از <span className="text-primary-dark">تورینو</span>
+              خرید تلفنی از <span className="text-[#082d10]">تورینو</span>
             </h2>
             <p className="mt-2 text-sm md:mt-3 md:text-lg">
               به هرکجا که میخواهید!
