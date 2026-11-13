@@ -27,8 +27,8 @@ export default async function Home({
       <Image
         src="/images/home/hero.png"
         alt=""
-        width={1200}
-        height={400}
+        width={1439}
+        height={350}
         priority
         sizes="100vw"
         className="h-auto w-full md:h-80 md:object-cover"

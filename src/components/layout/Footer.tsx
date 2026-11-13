@@ -1,17 +1,23 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 const cols = [
   {
     title: 'تورینو',
-    items: ['درباره ما', 'تماس با ما', 'چرا تورینو', 'بیمه مسافرتی'],
+    items: [
+      { label: 'درباره ما', href: '/about' },
+      { label: 'تماس با ما', href: '/contact' },
+      { label: 'چرا تورینو' },
+      { label: 'بیمه مسافرتی' },
+    ],
   },
   {
     title: 'خدمات مشتریان',
     items: [
-      'پشتیبانی آنلاین',
-      'راهنمای خرید',
-      'راهنمای استرداد',
-      'پرسش و پاسخ',
+      { label: 'پشتیبانی آنلاین' },
+      { label: 'راهنمای خرید' },
+      { label: 'راهنمای استرداد' },
+      { label: 'پرسش و پاسخ' },
     ],
   },
 ]
@@ -26,7 +32,15 @@ export default function Footer() {
               <h3 className="mb-4 font-bold">{c.title}</h3>
               <ul className="space-y-3 text-sm text-gray-600">
                 {c.items.map((i) => (
-                  <li key={i}>{i}</li>
+                  <li key={i.label}>
+                    {i.href ? (
+                      <Link href={i.href} className="hover:text-primary">
+                        {i.label}
+                      </Link>
+                    ) : (
+                      i.label
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -71,7 +85,6 @@ export default function Footer() {
               />
             </div>
 
-            {/* لوگو و تلفن */}
             <div className="md:order-1">
               <Image
                 src="/images/logo.svg"

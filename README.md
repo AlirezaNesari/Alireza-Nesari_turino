@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Turino
 
-## Getting Started
+An online tour-booking website for domestic and international tours. Final bootcamp project, built with Next.js and the provided `travel-agency-api` backend.
 
-First, run the development server:
+## Features
+
+- Tour search by origin, destination and a Jalali (Persian calendar) date range, rendered on the server with filters stored in the URL
+- Tour list and a details page for each tour
+- Login with a mobile number and a one-time code (OTP), with tokens stored in httpOnly cookies
+- Tour reservation, passenger details form and final purchase
+- Profile (account, personal and bank information), my tours and transactions
+- Responsive (mobile-first) and right-to-left layout
+
+## Tech stack
+
+Next.js (App Router), TypeScript, Tailwind CSS, React Query, Axios, React Hook Form + Yup, Zustand, react-toastify, react-loader-spinner, jalaali-js
+
+## Getting started
+
+### 1. Run the backend (port 6500)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd travel-agency-api
+npm i
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Run the frontend
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd turino
+npm i
+cp .env.example .env.local
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+On Windows PowerShell, use `Copy-Item .env.example .env.local` instead of `cp`.
 
-## Learn More
+The site is available at `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+### Production build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment variables
 
-## Deploy on Vercel
+| Name            | Description                                       |
+| --------------- | ------------------------------------------------- |
+| `API_URL`       | Backend address. Default: `http://localhost:6500` |
+| `COOKIE_SECURE` | Set to `true` when the site is served over HTTPS  |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The backend does not send real SMS messages. The OTP code is printed in the backend terminal (in development mode it is also shown in a toast).
+- The sample tours have dates in the Jalali year 1404. To test the date filter, go back to that year in the calendar.
+- The browser only talks to the `/api/*` routes of Next.js. Tokens are kept in httpOnly cookies and are refreshed automatically when the access token expires.
+- Protected pages (`/profile` and `/checkout`) redirect to the home page and open the login modal when the user is not signed in.
+
+## Project structure
+
+```
+src/
+├── app/          Pages and Route Handlers
+├── components/   UI components (auth, home, tour, checkout, profile, ui, layout)
+├── services/     API calls
+├── hooks/        Custom hooks
+├── store/        Zustand store
+├── lib/          HTTP client and server-side helpers
+├── utils/        Jalali dates, formatting, validation
+└── constants/    Cities and vehicle types
+```
+
+## Pages and rendering
+
+| Page                            | Route                                                 | Rendering        |
+| ------------------------------- | ----------------------------------------------------- | ---------------- |
+| Home (search and tour list)     | `/`                                                   | SSR              |
+| Tour details                    | `/tours/[tourId]`                                     | ISR (60 seconds) |
+| Checkout                        | `/checkout`                                           | CSR, protected   |
+| Profile, my tours, transactions | `/profile`, `/profile/tours`, `/profile/transactions` | CSR, protected   |
+| Services, about, contact        | `/services`, `/about`, `/contact`                     | Static           |
